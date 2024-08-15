@@ -11,6 +11,7 @@ export default {
   <main>
     <div class="container">
       Main
+      <router-view />
     </div>
   </main>
 </template>
