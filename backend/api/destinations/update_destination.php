@@ -1,0 +1,17 @@
+<?php
+include '../db.php';
+
+$id = $_POST['id'];
+$name = $_POST['name'];
+$latitude = $_POST['latitude'];
+$longitude = $_POST['longitude'];
+$description = $_POST['description'];
+
+try {
+    $stmt = $pdo->prepare("UPDATE destinations SET name = ?, latitude = ?, longitude = ?, description = ? WHERE id = ?");
+    $stmt->execute([$name, $latitude, $longitude, $description, $id]);
+    echo json_encode(["message" => "Destination updated successfully"]);
+} catch (PDOException $e) {
+    die("Error updating destination: " . $e->getMessage());
+}
+?>
