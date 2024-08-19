@@ -9,7 +9,8 @@ try {
         '002_create_days_table.sql',
         '003_create_destinations_table.sql',
         '004_create_ratings_table.sql',
-        '005_create_destination_ratings_table.sql'
+        '005_create_destination_ratings_table.sql',
+        '006_add_updated_at_columns.sql'
     ];
 
     // Execute migrations
