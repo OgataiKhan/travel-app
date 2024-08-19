@@ -1,6 +1,5 @@
 <script>
 
-
 export default {
   name: 'AppFooter',
 };
@@ -15,4 +14,10 @@ export default {
   </footer>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+footer {
+  background-color: blue;
+}
+
+</style>

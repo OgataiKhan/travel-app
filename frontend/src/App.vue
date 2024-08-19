@@ -1,10 +1,10 @@
 <script>
-import AppHeader from './components/AppHeader.vue';
-import AppMain from './components/AppMain.vue';
-import AppFooter from './components/AppFooter.vue';
+import AppHeader from "./components/AppHeader.vue";
+import AppMain from "./components/AppMain.vue";
+import AppFooter from "./components/AppFooter.vue";
 
 export default {
-  name: 'AppComponent',
+  name: "AppComponent",
   components: {
     AppHeader,
     AppMain,
@@ -13,12 +13,13 @@ export default {
 };
 </script>
 
-<template>
+<template class="page-content">
   <AppHeader />
   <AppMain />
   <AppFooter />
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 
+  
 </style>

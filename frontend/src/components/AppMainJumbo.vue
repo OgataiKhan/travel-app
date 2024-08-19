@@ -1,20 +1,19 @@
 <script>
+
+
 export default {
-  name: "AppMain",
+  name: 'AppMainJumbo',
 };
+
 </script>
 
 <template>
   <main>
     <div class="container">
-      Main
+      Jumbotron
       <router-view />
     </div>
   </main>
 </template>
 
-<style scoped>
-main {
-  flex: 1;
-}
-</style>
+<style scoped></style>

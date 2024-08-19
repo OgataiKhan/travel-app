@@ -10,3 +10,18 @@ DEBUG
 body {
   background-color: green;
 }
+
+/* 
+********
+GENERAL
+********
+*/
+
+body, #app {
+  min-height: 100vh;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+}
