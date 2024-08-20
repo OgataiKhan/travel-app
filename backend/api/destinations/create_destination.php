@@ -1,5 +1,6 @@
 <?php
 include '../db.php';
+include '../headers.php';
 
 $day_id = $_POST['day_id'];
 $name = $_POST['name'];

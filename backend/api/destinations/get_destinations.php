@@ -1,5 +1,6 @@
 <?php
 include '../db.php';
+include '../headers.php';
 
 $day_id = $_GET['day_id'];
 

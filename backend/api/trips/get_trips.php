@@ -1,5 +1,6 @@
 <?php
 include '../db.php';
+include '../headers.php';
 
 // Check if a trip ID was provided
 $id = $_GET['id'] ?? null;

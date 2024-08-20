@@ -1,5 +1,6 @@
 <?php
 include '../db.php';
+include '../headers.php';
 
 // Retrieve trip data from POST request
 $title = $_POST['title'];

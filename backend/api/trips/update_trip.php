@@ -1,5 +1,6 @@
 <?php
 include '../db.php';
+include '../headers.php';
 
 // Retrieve trip data and ID from POST request
 $id = $_POST['id'];

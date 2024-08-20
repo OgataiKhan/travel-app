@@ -1,5 +1,6 @@
 <?php
 include '../db.php';
+include '../headers.php';
 
 $trip_id = $_GET['trip_id'];
 

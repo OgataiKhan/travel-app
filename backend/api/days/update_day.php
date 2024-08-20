@@ -1,5 +1,6 @@
 <?php
 include '../db.php';
+include '../headers.php';
 
 $id = $_POST['id'];
 $date = $_POST['date'];

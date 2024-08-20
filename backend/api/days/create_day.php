@@ -1,5 +1,6 @@
 <?php
 include '../db.php';
+include '../headers.php';
 
 $trip_id = $_POST['trip_id'];
 $date = $_POST['date'];
