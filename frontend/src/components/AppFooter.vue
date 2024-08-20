@@ -7,17 +7,19 @@ export default {
 </script>
 
 <template>
-  <footer>
+  <footer class="py-5">
     <div class="container">
       Footer
     </div>
   </footer>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@use '../scss/partial/variables' as *;
 
 footer {
-  background-color: blue;
+  background-color: $font-primary;
+  color: $font-secondary;
 }
 
 </style>

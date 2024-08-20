@@ -32,7 +32,7 @@ export default {
       rgba(0, 0, 0, 0.4) 10%,
       rgba(0, 0, 0, 0) 40%
     );
-    color: #FFF;
+    color: $font-secondary;
     position: relative;
     .textbox {
       position: absolute;
