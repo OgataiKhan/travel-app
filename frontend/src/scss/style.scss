@@ -1,21 +1,17 @@
 // Import Bootstrap's CSS
+@use './partial/variables' as *;
 @import "bootstrap/scss/bootstrap";
-
-/* 
-********
-DEBUG
-********
-*/
-
-body {
-  background-color: green;
-}
+@import url('https://fonts.googleapis.com/css2?family=Rakkas&display=swap');
 
 /* 
 ********
 GENERAL
 ********
 */
+
+body {
+  background-color: $bg-primary;
+}
 
 body, #app {
   min-height: 100vh;

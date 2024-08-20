@@ -1,4 +1,5 @@
 <script>
+
 export default {
   name: "AppMain",
 };
@@ -6,10 +7,7 @@ export default {
 
 <template>
   <main>
-    <div class="container">
-      Main
       <router-view />
-    </div>
   </main>
 </template>
 
