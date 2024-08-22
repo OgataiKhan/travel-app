@@ -1,5 +1,5 @@
 <script>
-import { format } from 'date-fns';
+import { dateMixin } from '../mixins/dateMixin';
 import { useTripsStore } from "../stores/trips";
 import AppMainJumbo from "../components/AppMainJumbo.vue";
 
@@ -8,6 +8,7 @@ export default {
   components: {
     AppMainJumbo,
   },
+  mixins: [dateMixin],
   data() {
     return {
       searchQuery: "",
@@ -23,11 +24,6 @@ export default {
         trip.title.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     },
-  },
-  methods: {
-    formatDate(date) {
-      return date ? format(new Date(date), 'dd/MM/yyyy') : '';
-    }
   },
   created() {
     const tripsStore = useTripsStore();
@@ -52,6 +48,11 @@ export default {
       />
     </div>
     <!-- /Search bar -->
+    <!-- No trips found message -->
+    <p v-if="filteredTrips.length === 0" class="no-trips-msg text-center py-5">
+      There's nothing here! Please try a different search or add new trips
+    </p>
+    <!-- /No trips found message -->
     <div class="row gy-4 pb-5">
       <!-- Trip card -->
       <div v-for="trip in filteredTrips" class="col col-lg-4 col-xxl-3">
@@ -60,12 +61,13 @@ export default {
           <div class="card-body">
             <h5 class="card-title">{{ trip.title }}</h5>
             <h6 class="card-subtitle mb-2 text-body-secondary">
-              {{ formatDate(trip.start_date) }} - {{ formatDate(trip.end_date) }}
+              {{ formatDate(trip.start_date) }} -
+              {{ formatDate(trip.end_date) }}
             </h6>
             <p class="card-text">
               {{ trip.description }}
             </p>
-            <a href="#" class="btn btn-tripcard">Go somewhere</a>
+            <a :href="`/trip/${trip.id}`" class="btn btn-tripcard">View trip</a>
           </div>
         </div>
       </div>
@@ -76,9 +78,18 @@ export default {
 
 <style lang="scss" scoped>
 @use "../scss/partial/variables" as *;
+@use "../scss/partial/mixins" as *;
 
 .btn-tripcard {
-  background-color: $bg-secondary;
-  color: $font-secondary;
+  @include button;
 }
+
+.no-trips-msg{
+  // font-size: 2rem;
+  // font-style: italic;
+  // color: $font-primary;
+  // font-weight: 600;
+  @include message;
+}
+
 </style>

@@ -1,0 +1,19 @@
+/*
+*********
+MIXINS
+*********
+*/
+
+@use "./variables" as *;
+
+@mixin button {
+  background-color: $bg-secondary;
+  color: $font-secondary;
+}
+
+@mixin message {
+  font-size: 2rem;
+  font-style: italic;
+  color: $font-primary;
+  font-weight: 600;
+}

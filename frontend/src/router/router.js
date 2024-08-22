@@ -14,6 +14,7 @@ const routes = [
     path: "/trip/:trip_id",
     name: "TripDetail",
     component: TripDetail,
+    props: true
   },
   {
     path: "/trip/:trip_id/day/:day_id",
