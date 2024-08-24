@@ -15,6 +15,10 @@ export default {
       const tripsStore = useTripsStore();
       return tripsStore.days;
     },
+    destinations() {
+      const tripsStore = useTripsStore();
+      return tripsStore.destinations;
+    },
   },
   created() {
     const tripsStore = useTripsStore();
@@ -42,21 +46,21 @@ export default {
     <!-- /No trip found message -->
     <!-- Days -->
     <div class="accordion">
-      <div v-for="(day, index) in days" :key="day.id" class="accordion-item rounded my-4">
+      <div v-for="day in days" :key="day.id" class="accordion-item rounded my-4">
         <h2 class="accordion-header">
           <button
             class="accordion-days-btn accordion-button rounded collapsed"
             type="button"
             data-bs-toggle="collapse"
-            :data-bs-target="'#panelsStayOpen-collapse' + index"
+            :data-bs-target="'#panelsStayOpen-collapse' + day.id"
             aria-expanded="false"
-            :aria-controls="'panelsStayOpen-collapse' + index"
+            :aria-controls="'panelsStayOpen-collapse' + day.id"
           >
-            <h5 class="card-title">{{ formatDate(day?.date) }} - Day {{ index + 1 }}</h5>
+            <h5 class="card-title">{{ formatDate(day?.date) }} - Day {{ day.id + 1 }}</h5>
           </button>
         </h2>
         <div
-          :id="'panelsStayOpen-collapse' + index"
+          :id="'panelsStayOpen-collapse' + day.id"
           class="accordion-collapse collapse"
         >
           <div class="accordion-body">
@@ -76,24 +80,24 @@ export default {
               <div class="day-description-box col-12 col-lg-7">
                 <!-- Destinations -->
                 <div class="accordion">
-                  <div class="accordion-item accordion-inner-bg rounded my-3">
+                  <div v-for="destination in destinations[day.id]" :key="destination.id" class="accordion-item accordion-inner-bg rounded my-3">
                     <h2 class="accordion-header">
                       <button
                         class="accordion-destinations-btn accordion-button rounded collapsed"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpenDestination-collapseOne"
+                        :data-bs-target="'#destinationCollapse' + destination.id"
                         aria-expanded="false"
-                        aria-controls="panelsStayOpenDestination-collapseOne"
+                        :aria-controls="'destinationCollapse' + destination.id"
                       >
-                        <h5 class="card-title">Destination Title - <span>STARS</span></h5>
+                        <h5 class="card-title">{{ destination.name }} - <span>STARS</span></h5>
                       </button>
                     </h2>
                     <div
-                      id="panelsStayOpenDestination-collapseOne"
+                      :id="'destinationCollapse' + destination.id"
                       class="accordion-collapse collapse"
                     >
-                      <div class="accordion-body">Destination description</div>
+                      <div class="accordion-body">{{ destination.description }}</div>
                     </div>
                   </div>
                 </div>
@@ -106,7 +110,7 @@ export default {
       </div>
     </div>
     <!-- /Days -->
-    <a href="#" class="btn btn-addday me-3">Add day</a>
+    <a v-if="trip" href="#" class="btn btn-addday me-3">Add day</a>
     <router-link to="/" class="btn btn-home my-4" aria-current="page"
       >Home</router-link
     >

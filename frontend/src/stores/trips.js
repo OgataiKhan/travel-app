@@ -8,6 +8,7 @@ export const useTripsStore = defineStore("trips", {
     trips: [],
     currentTrip: null,
     days: [],
+    destinations: {},
   }),
   actions: {
     fetchTrips() {
@@ -31,12 +32,14 @@ export const useTripsStore = defineStore("trips", {
           } else {
             this.currentTrip = null;
             this.days = [];
+            this.destinations = {};
           }
         })
         .catch((error) => {
           console.error("Error fetching trip:", error);
           this.currentTrip = null;
           this.days = [];
+          this.destinations = {};
         });
     },
     fetchDays(trip_id) {
@@ -44,10 +47,28 @@ export const useTripsStore = defineStore("trips", {
         .get(`${BASE_URL}days/get_days.php?trip_id=${trip_id}`)
         .then((response) => {
           this.days = response.data;
+          this.days.forEach(day => {
+            this.fetchDestinations(day.id); // Fetch destinations for each day
+          });
         })
         .catch((error) => {
           console.error("Error fetching days:", error);
           this.days = [];
+        });
+    },
+    fetchDestinations(day_id) {
+      axios
+        .get(`${BASE_URL}destinations/get_destinations.php?day_id=${day_id}`)
+        .then((response) => {
+          this.$patch(state => {
+            state.destinations[day_id] = response.data;
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching destinations:", error);
+          this.$patch(state => {
+            state.destinations[day_id] = [];
+          });
         });
     },
   },
