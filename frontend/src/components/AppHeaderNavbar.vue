@@ -42,7 +42,7 @@ export default {
 @use '../scss/partial/variables' as *;
 
 li a.nav-link {
-  color: $font-primary;
+  color: $font-secondary;
 }
 
 @media only screen and (min-width: 992px) {

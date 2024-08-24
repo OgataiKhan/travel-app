@@ -57,7 +57,7 @@ export default {
       <!-- Trip card -->
       <div v-for="trip in filteredTrips" class="col col-lg-4 col-xxl-3">
         <div class="card" style="min-width: 18rem">
-          <img src="/img/temp-thumbnail.jpg" class="card-img-top" alt="..." />
+          <img src="/img/temp-thumbnail.jpg" class="card-img-top" :alt="trip.title" />
           <div class="card-body">
             <h5 class="card-title">{{ trip.title }}</h5>
             <h6 class="card-subtitle mb-2 text-body-secondary">
@@ -85,10 +85,6 @@ export default {
 }
 
 .no-trips-msg{
-  // font-size: 2rem;
-  // font-style: italic;
-  // color: $font-primary;
-  // font-weight: 600;
   @include message;
 }
 
