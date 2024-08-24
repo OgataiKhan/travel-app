@@ -2,9 +2,13 @@
 include '../db.php';
 include '../headers.php';
 
-$trip_id = $_POST['trip_id'];
-$date = $_POST['date'];
-$description = $_POST['description'];
+// Decode JSON
+$data = json_decode(file_get_contents('php://input'), true);
+
+// Retrieve day data from decoded array
+$trip_id = $data['trip_id'];
+$date = $data['date'];
+$description = $data['description'];
 
 try {
     $stmt = $pdo->prepare("INSERT INTO days (trip_id, date, description) VALUES (?, ?, ?)");

@@ -10,7 +10,8 @@ export default {
       <div class="container">
         <div class="textbox">
           <h2>Explore the World</h2>
-          <button type="button" class="btn">Add New Trip</button>
+          <!-- <button type="button" class="btn">Add New Trip</button> -->
+          <router-link to="/create-trip" class="btn">Create New Trip</router-link>
         </div>
       </div>
     </div>
@@ -41,7 +42,7 @@ export default {
         font-family: "Rakkas", serif;
         font-size: 4rem;
       }
-      button {
+      .btn {
         background-color: $bg-primary;
         color: $font-primary;
         font-weight: 500;

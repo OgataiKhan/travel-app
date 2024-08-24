@@ -102,6 +102,7 @@ export default {
                   </div>
                 </div>
                 <!-- /Destinations -->
+                <a href="#" class="btn btn-adddestination ms-1 me-5">Add new destination</a>
               </div>
               <div class="day-map-box col-12 col-lg-5">Map Tomtom</div>
             </div>
@@ -110,7 +111,6 @@ export default {
       </div>
     </div>
     <!-- /Days -->
-    <a v-if="trip" href="#" class="btn btn-addday me-3">Add day</a>
     <router-link to="/" class="btn btn-home my-4" aria-current="page"
       >Home</router-link
     >
@@ -122,7 +122,7 @@ export default {
 @use "../scss/partial/mixins" as *;
 
 .btn-home,
-.btn-addday {
+.btn-adddestination {
   @include button;
 }
 
@@ -133,10 +133,6 @@ export default {
 .accordion-days-btn.accordion-button:not(.collapsed) {
   background-color: #fff;
 }
-
-// .accordion-destinations-btn.accordion-button:not(.collapsed) {
-//   background-color: $bg-primary;
-// }
 
 .accordion-button {
   box-shadow: none;

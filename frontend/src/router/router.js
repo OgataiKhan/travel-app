@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import TripsView from "../views/TripsView.vue";
 import TripDetail from "../views/TripDetail.vue";
-import DayDetail from "../views/DayDetail.vue";
+import CreateTrip from "../views/CreateTrip.vue";
 import ErrorPage from "../views/ErrorPage.vue";
 
 const routes = [
@@ -14,12 +14,12 @@ const routes = [
     path: "/trip/:trip_id",
     name: "TripDetail",
     component: TripDetail,
-    props: true
+    props: true,
   },
   {
-    path: "/trip/:trip_id/day/:day_id",
-    name: "DayDetail",
-    component: DayDetail,
+    path: "/create-trip",
+    name: "CreateTrip",
+    component: CreateTrip,
   },
   {
     path: "/:pathMatch(.*)*",

@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import { format, parseISO, addDays, eachDayOfInterval } from "date-fns";
 
 const BASE_URL = "http://localhost:8000/api/";
 
@@ -71,5 +72,63 @@ export const useTripsStore = defineStore("trips", {
           });
         });
     },
+    async createTrip(tripData) {
+      try {
+    
+        // Create the trip and get the new trip ID
+        const tripResponse = await axios.post(
+          `${BASE_URL}trips/create_trip.php`,
+          tripData,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+    
+        const newTripId = tripResponse.data.id;
+    
+        // Ensure newTripId is not undefined or null
+        if (!newTripId) {
+          throw new Error("Failed to create trip: newTripId is undefined or null.");
+        }
+        
+        // Convert start_date and end_date to Date objects
+        const startDate = parseISO(tripData.start_date);
+        const endDate = parseISO(tripData.end_date);
+    
+        // Create an array of dates between startDate and endDate
+        const dateArray = eachDayOfInterval({ start: startDate, end: endDate }).map(date =>
+          format(date, 'yyyy-MM-dd')
+        );
+        
+        // Create days for each date
+        const dayCreationPromises = dateArray.map((date) => {
+          return axios.post(
+            `${BASE_URL}days/create_day.php`,
+            {
+              trip_id: newTripId,
+              date: date,
+              description: "",
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json' 
+              }
+            }
+          );
+        });
+    
+        await Promise.all(dayCreationPromises);
+    
+        // Fetch updated trip data
+        await this.fetchTrip(newTripId);
+    
+        return newTripId;
+      } catch (error) {
+        console.error("Error creating trip and days:", error);
+        throw error;
+      }
+    }    
   },
 });

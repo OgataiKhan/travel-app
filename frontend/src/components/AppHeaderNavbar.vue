@@ -47,7 +47,7 @@ li a.nav-link {
 
 @media only screen and (min-width: 992px) {
   ul li:hover {
-    background: #dedbcf;
+    background: $bg-secondary;
   }
 }
 
