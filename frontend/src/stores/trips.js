@@ -75,7 +75,7 @@ export const useTripsStore = defineStore("trips", {
     async createTrip(tripData) {
       try {
     
-        // Create the trip and get the new trip ID
+        // Create trip and get new trip ID
         const tripResponse = await axios.post(
           `${BASE_URL}trips/create_trip.php`,
           tripData,
@@ -129,6 +129,25 @@ export const useTripsStore = defineStore("trips", {
         console.error("Error creating trip and days:", error);
         throw error;
       }
-    }    
+    },
+    async deleteTrip(id) {
+      try {
+        await axios.post(
+          `${BASE_URL}trips/delete_trip.php`,
+          { id },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        // Remove deleted trip from state
+        this.trips = this.trips.filter((trip) => trip.id !== id);
+        console.log(`Trip with ID ${id} deleted successfully.`);
+      } catch (error) {
+        console.error("Error deleting trip:", error);
+        throw error;
+      }
+    },   
   },
 });

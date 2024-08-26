@@ -1,11 +1,26 @@
 <script>
 import { dateMixin } from "../mixins/dateMixin";
+import { deleteTripMixin } from "../mixins/deleteTripMixin";
 import { useTripsStore } from "../stores/trips";
 
 export default {
   name: "TripsDetail",
   props: ["trip_id"],
-  mixins: [dateMixin],
+  mixins: [dateMixin, deleteTripMixin],
+  methods: {
+    async deleteDay(dayId) {
+      const tripsStore = useTripsStore();
+      if (confirm("Are you sure you want to delete this day?")) {
+        try {
+          await tripsStore.deleteDay(dayId);
+          console.log("Day deleted successfully!");
+        } catch (error) {
+          console.error("Error deleting day:", error);
+          alert("Failed to delete day. Please try again.");
+        }
+      }
+    },
+  },
   computed: {
     trip() {
       const tripsStore = useTripsStore();
@@ -46,7 +61,11 @@ export default {
     <!-- /No trip found message -->
     <!-- Days -->
     <div class="accordion">
-      <div v-for="day in days" :key="day.id" class="accordion-item rounded my-4">
+      <div
+        v-for="day in days"
+        :key="day.id"
+        class="accordion-item rounded my-4"
+      >
         <h2 class="accordion-header">
           <button
             class="accordion-days-btn accordion-button rounded collapsed"
@@ -56,7 +75,9 @@ export default {
             aria-expanded="false"
             :aria-controls="'panelsStayOpen-collapse' + day.id"
           >
-            <h5 class="card-title">{{ formatDate(day?.date) }} - Day {{ day.id + 1 }}</h5>
+            <h5 class="card-title">
+              {{ formatDate(day?.date) }} - Day {{ day.id + 1 }}
+            </h5>
           </button>
         </h2>
         <div
@@ -80,29 +101,48 @@ export default {
               <div class="day-description-box col-12 col-lg-7">
                 <!-- Destinations -->
                 <div class="accordion">
-                  <div v-for="destination in destinations[day.id]" :key="destination.id" class="accordion-item accordion-inner-bg rounded my-3">
+                  <div
+                    v-for="destination in destinations[day.id]"
+                    :key="destination.id"
+                    class="accordion-item accordion-inner-bg rounded my-3"
+                  >
                     <h2 class="accordion-header">
                       <button
                         class="accordion-destinations-btn accordion-button rounded collapsed"
                         type="button"
                         data-bs-toggle="collapse"
-                        :data-bs-target="'#destinationCollapse' + destination.id"
+                        :data-bs-target="
+                          '#destinationCollapse' + destination.id
+                        "
                         aria-expanded="false"
                         :aria-controls="'destinationCollapse' + destination.id"
                       >
-                        <h5 class="card-title">{{ destination.name }} - <span>STARS</span></h5>
+                        <h5 class="card-title">
+                          {{ destination.name }} - <span>STARS</span>
+                        </h5>
                       </button>
                     </h2>
                     <div
                       :id="'destinationCollapse' + destination.id"
                       class="accordion-collapse collapse"
                     >
-                      <div class="accordion-body">{{ destination.description }}</div>
+                      <div class="accordion-body">
+                        {{ destination.description }}
+                      </div>
+                      <!-- Buttons -->
+                      <button type="button" class="btn btn-danger ms-3 mb-3">
+                        Remove destination
+                      </button>
+                      <!-- /Buttons -->
                     </div>
                   </div>
                 </div>
                 <!-- /Destinations -->
-                <a href="#" class="btn btn-adddestination ms-1 me-5">Add new destination</a>
+                <!-- Buttons -->
+                <a href="#" class="btn btn-adddestination"
+                  >Add new destination</a
+                >
+                <!-- /Buttons -->
               </div>
               <div class="day-map-box col-12 col-lg-5">Map Tomtom</div>
             </div>
@@ -111,9 +151,18 @@ export default {
       </div>
     </div>
     <!-- /Days -->
+    <!-- Buttons -->
     <router-link to="/" class="btn btn-home my-4" aria-current="page"
       >Home</router-link
     >
+    <button
+      type="button"
+      @click="deleteTrip(trip.id)"
+      class="btn btn-danger ms-3"
+    >
+      Delete trip
+    </button>
+    <!-- Buttons -->
   </div>
 </template>
 

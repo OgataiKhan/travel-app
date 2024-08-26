@@ -1,0 +1,2 @@
+ALTER TABLE trips
+ADD COLUMN cover_img VARCHAR(255) NULL AFTER end_date;

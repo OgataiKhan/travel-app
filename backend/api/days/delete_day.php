@@ -2,7 +2,10 @@
 include '../db.php';
 include '../headers.php';
 
-$id = $_POST['id'];
+// Decode JSON
+$data = json_decode(file_get_contents('php://input'), true);
+
+$day_id = $data['id'] ?? null;
 
 try {
     $stmt = $pdo->prepare("DELETE FROM days WHERE id = ?");

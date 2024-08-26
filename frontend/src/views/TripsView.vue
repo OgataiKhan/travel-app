@@ -1,5 +1,6 @@
 <script>
 import { dateMixin } from '../mixins/dateMixin';
+import { deleteTripMixin } from "../mixins/deleteTripMixin";
 import { useTripsStore } from "../stores/trips";
 import AppMainJumbo from "../components/AppMainJumbo.vue";
 
@@ -8,7 +9,7 @@ export default {
   components: {
     AppMainJumbo,
   },
-  mixins: [dateMixin],
+  mixins: [dateMixin, deleteTripMixin],
   data() {
     return {
       searchQuery: "",
@@ -67,7 +68,10 @@ export default {
             <p class="card-text">
               {{ trip.description }}
             </p>
+            <!-- Buttons -->
             <a :href="`/trip/${trip.id}`" class="btn btn-tripcard">View trip</a>
+            <button type="button" @click="deleteTrip(trip.id)" class="btn btn-danger ms-3">Delete trip</button>
+            <!-- /Buttons -->
           </div>
         </div>
       </div>

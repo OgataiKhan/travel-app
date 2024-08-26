@@ -2,8 +2,11 @@
 include '../db.php';
 include '../headers.php';
 
+// Decode JSON
+$data = json_decode(file_get_contents('php://input'), true);
+
 // Retrieve trip ID from POST request
-$id = $_POST['id'];
+$id = $data['id'] ?? null;
 
 try {
     $stmt = $pdo->prepare("DELETE FROM trips WHERE id = ?");
