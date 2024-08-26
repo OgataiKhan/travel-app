@@ -20,8 +20,15 @@ export default {
         }
       }
     },
+    getImageUrl(imagePath) {
+      return `${this.backendUrl}uploads/${imagePath}`;
+    },
   },
   computed: {
+    backendUrl() {
+      const tripsStore = useTripsStore();
+      return tripsStore.BACKEND_URL;
+    },
     trip() {
       const tripsStore = useTripsStore();
       return tripsStore.currentTrip;
@@ -46,12 +53,18 @@ export default {
   <div class="container">
     <!-- Trip details -->
     <div v-if="trip">
-      <h2 class="text-center py-4">{{ trip?.title }}</h2>
-      <p>{{ trip?.description }}</p>
-      <p class="trip-dates">
+      <h2 class="text-center pt-4">{{ trip?.title }}</h2>
+      <p class="trip-dates text-center pb-2">
         {{ formatDate(trip?.start_date) }} -
         {{ formatDate(trip?.end_date) }}
       </p>
+      <div class="d-flex justify-content-center">
+        <div class="cover-box mb-3">
+          <img v-if="trip.cover_img" :src="getImageUrl(trip.cover_img)" :alt="trip?.title" class="img-fluid">
+          <img v-else src="/img/temp-thumbnail.jpg" alt="Default cover" class="img-fluid" />
+        </div>
+      </div>
+      <p>{{ trip?.description }}</p>
     </div>
     <!-- Trip details -->
     <!-- No trip found message -->
@@ -177,6 +190,18 @@ export default {
 
 .no-trips-msg {
   @include message;
+}
+
+.trip-dates {
+  font-size: 1.3rem;
+  color: #585c5e;
+}
+
+.cover-box {
+  max-width: 800px;
+  img {
+    max-height: 600px;
+  }
 }
 
 .accordion-days-btn.accordion-button:not(.collapsed) {

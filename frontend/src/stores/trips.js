@@ -6,6 +6,7 @@ const BASE_URL = "http://localhost:8000/api/";
 
 export const useTripsStore = defineStore("trips", {
   state: () => ({
+    BACKEND_URL: "http://localhost:8000/",
     trips: [],
     currentTrip: null,
     days: [],
@@ -48,7 +49,7 @@ export const useTripsStore = defineStore("trips", {
         .get(`${BASE_URL}days/get_days.php?trip_id=${trip_id}`)
         .then((response) => {
           this.days = response.data;
-          this.days.forEach(day => {
+          this.days.forEach((day) => {
             this.fetchDestinations(day.id); // Fetch destinations for each day
           });
         })
@@ -61,47 +62,49 @@ export const useTripsStore = defineStore("trips", {
       axios
         .get(`${BASE_URL}destinations/get_destinations.php?day_id=${day_id}`)
         .then((response) => {
-          this.$patch(state => {
+          this.$patch((state) => {
             state.destinations[day_id] = response.data;
           });
         })
         .catch((error) => {
           console.error("Error fetching destinations:", error);
-          this.$patch(state => {
+          this.$patch((state) => {
             state.destinations[day_id] = [];
           });
         });
     },
     async createTrip(tripData) {
       try {
-    
         // Create trip and get new trip ID
         const tripResponse = await axios.post(
           `${BASE_URL}trips/create_trip.php`,
           tripData,
           {
             headers: {
-              'Content-Type': 'application/json'
-            }
+              "Content-Type": "multipart/form-data",
+            },
           }
         );
-    
+
         const newTripId = tripResponse.data.id;
-    
+
         // Ensure newTripId is not undefined or null
         if (!newTripId) {
-          throw new Error("Failed to create trip: newTripId is undefined or null.");
+          throw new Error(
+            "Failed to create trip: newTripId is undefined or null."
+          );
         }
-        
+
         // Convert start_date and end_date to Date objects
-        const startDate = parseISO(tripData.start_date);
-        const endDate = parseISO(tripData.end_date);
-    
+        const startDate = parseISO(tripData.get("start_date")); // Use get() for FormData
+        const endDate = parseISO(tripData.get("end_date")); // Use get() for FormData
+
         // Create an array of dates between startDate and endDate
-        const dateArray = eachDayOfInterval({ start: startDate, end: endDate }).map(date =>
-          format(date, 'yyyy-MM-dd')
-        );
-        
+        const dateArray = eachDayOfInterval({
+          start: startDate,
+          end: endDate,
+        }).map((date) => format(date, "yyyy-MM-dd"));
+
         // Create days for each date
         const dayCreationPromises = dateArray.map((date) => {
           return axios.post(
@@ -113,17 +116,17 @@ export const useTripsStore = defineStore("trips", {
             },
             {
               headers: {
-                'Content-Type': 'application/json' 
-              }
+                "Content-Type": "application/json",
+              },
             }
           );
         });
-    
+
         await Promise.all(dayCreationPromises);
-    
+
         // Fetch updated trip data
         await this.fetchTrip(newTripId);
-    
+
         return newTripId;
       } catch (error) {
         console.error("Error creating trip and days:", error);
@@ -137,8 +140,8 @@ export const useTripsStore = defineStore("trips", {
           { id },
           {
             headers: {
-              'Content-Type': 'application/json'
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
         // Remove deleted trip from state
@@ -148,6 +151,6 @@ export const useTripsStore = defineStore("trips", {
         console.error("Error deleting trip:", error);
         throw error;
       }
-    },   
+    },
   },
 });
