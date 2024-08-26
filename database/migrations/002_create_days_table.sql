@@ -4,5 +4,5 @@ CREATE TABLE days (
     date DATE,
     description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (trip_id) REFERENCES trips(id)
+    FOREIGN KEY (trip_id) REFERENCES trips(id) ON DELETE CASCADE
 );

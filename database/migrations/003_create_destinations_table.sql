@@ -7,5 +7,5 @@ CREATE TABLE destinations (
     description TEXT,
     is_visited BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (day_id) REFERENCES days(id)
+    FOREIGN KEY (day_id) REFERENCES days(id) ON DELETE CASCADE
 );
