@@ -1,12 +1,13 @@
 <script>
 import { dateMixin } from "../mixins/dateMixin";
 import { deleteTripMixin } from "../mixins/deleteTripMixin";
+import { getImageUrlMixin } from "../mixins/getImageUrlMixin";
 import { useTripsStore } from "../stores/trips";
 
 export default {
   name: "TripsDetail",
   props: ["trip_id"],
-  mixins: [dateMixin, deleteTripMixin],
+  mixins: [dateMixin, deleteTripMixin, getImageUrlMixin],
   methods: {
     async deleteDay(dayId) {
       const tripsStore = useTripsStore();
@@ -20,15 +21,8 @@ export default {
         }
       }
     },
-    getImageUrl(imagePath) {
-      return `${this.backendUrl}uploads/${imagePath}`;
-    },
   },
   computed: {
-    backendUrl() {
-      const tripsStore = useTripsStore();
-      return tripsStore.BACKEND_URL;
-    },
     trip() {
       const tripsStore = useTripsStore();
       return tripsStore.currentTrip;
@@ -60,8 +54,7 @@ export default {
       </p>
       <div class="d-flex justify-content-center">
         <div class="cover-box mb-3">
-          <img v-if="trip.cover_img" :src="getImageUrl(trip.cover_img)" :alt="trip?.title" class="img-fluid">
-          <img v-else src="/img/temp-thumbnail.jpg" alt="Default cover" class="img-fluid" />
+          <img :src="trip.cover_img ? getImageUrl(trip.cover_img) : '/img/temp-thumbnail.jpg'" class="card-img-top" :alt="trip.title" />
         </div>
       </div>
       <p>{{ trip?.description }}</p>
@@ -200,7 +193,7 @@ export default {
 .cover-box {
   max-width: 800px;
   img {
-    max-height: 600px;
+    max-height: 480px;
   }
 }
 

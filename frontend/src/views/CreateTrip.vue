@@ -35,7 +35,6 @@ export default {
       this.loading = true;
       this.error = null;
       const tripsStore = useTripsStore();
-      // Added code
       const formData = new FormData();
 
       formData.append("title", this.form.title);
@@ -43,7 +42,6 @@ export default {
       formData.append("start_date", this.form.start_date);
       formData.append("end_date", this.form.end_date);
       formData.append("cover_img", this.form.cover_img);
-      // Added code end
 
       try {
         const newTripId = await tripsStore.createTrip(formData);

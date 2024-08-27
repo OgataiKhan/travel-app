@@ -1,6 +1,7 @@
 <script>
 import { dateMixin } from '../mixins/dateMixin';
 import { deleteTripMixin } from "../mixins/deleteTripMixin";
+import { getImageUrlMixin } from "../mixins/getImageUrlMixin";
 import { useTripsStore } from "../stores/trips";
 import AppMainJumbo from "../components/AppMainJumbo.vue";
 
@@ -9,7 +10,7 @@ export default {
   components: {
     AppMainJumbo,
   },
-  mixins: [dateMixin, deleteTripMixin],
+  mixins: [dateMixin, deleteTripMixin, getImageUrlMixin],
   data() {
     return {
       searchQuery: "",
@@ -58,7 +59,10 @@ export default {
       <!-- Trip card -->
       <div v-for="trip in filteredTrips" class="col col-lg-4 col-xxl-3">
         <div class="card" style="min-width: 18rem">
-          <img src="/img/temp-thumbnail.jpg" class="card-img-top" :alt="trip.title" />
+          <div class="cover-img-box d-flex align-items-center">
+            <img :src="trip.cover_img ? getImageUrl(trip.cover_img) : '/img/temp-thumbnail.jpg'" class="card-img-top" :alt="trip.title" />
+          </div>
+          
           <div class="card-body">
             <h5 class="card-title">{{ trip.title }}</h5>
             <h6 class="card-subtitle mb-2 text-body-secondary">
@@ -90,6 +94,13 @@ export default {
 
 .no-trips-msg{
   @include message;
+}
+
+.cover-img-box {
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+  // display: flex;
+  // align-items: center;
 }
 
 </style>
