@@ -96,8 +96,8 @@ export const useTripsStore = defineStore("trips", {
         }
 
         // Convert start_date and end_date to Date objects
-        const startDate = parseISO(tripData.get("start_date")); // Use get() for FormData
-        const endDate = parseISO(tripData.get("end_date")); // Use get() for FormData
+        const startDate = parseISO(tripData.get("start_date"));
+        const endDate = parseISO(tripData.get("end_date"));
 
         // Create an array of dates between startDate and endDate
         const dateArray = eachDayOfInterval({
@@ -149,6 +149,25 @@ export const useTripsStore = defineStore("trips", {
         console.log(`Trip with ID ${id} deleted successfully.`);
       } catch (error) {
         console.error("Error deleting trip:", error);
+        throw error;
+      }
+    },
+    async createDestination(destinationData) {
+      try {
+        await axios.post(
+          `${BASE_URL}destinations/create_destination.php`,
+          destinationData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        // Fetch updated destinations for specific day
+        await this.fetchDestinations(destinationData.day_id);
+        console.log("Destination created successfully.");
+      } catch (error) {
+        console.error("Error creating destination:", error);
         throw error;
       }
     },

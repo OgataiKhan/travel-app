@@ -54,7 +54,15 @@ export default {
       </p>
       <div class="d-flex justify-content-center">
         <div class="cover-box mb-3">
-          <img :src="trip.cover_img ? getImageUrl(trip.cover_img) : '/img/temp-thumbnail.jpg'" class="card-img-top" :alt="trip.title" />
+          <img
+            :src="
+              trip.cover_img
+                ? getImageUrl(trip.cover_img)
+                : '/img/temp-thumbnail.jpg'
+            "
+            class="card-img-top"
+            :alt="trip.title"
+          />
         </div>
       </div>
       <p>{{ trip?.description }}</p>
@@ -68,7 +76,7 @@ export default {
     <!-- Days -->
     <div class="accordion">
       <div
-        v-for="day in days"
+        v-for="(day, index) in days"
         :key="day.id"
         class="accordion-item rounded my-4"
       >
@@ -82,7 +90,7 @@ export default {
             :aria-controls="'panelsStayOpen-collapse' + day.id"
           >
             <h5 class="card-title">
-              {{ formatDate(day?.date) }} - Day {{ day.id + 1 }}
+              {{ formatDate(day?.date) }} - Day {{ index + 1 }}
             </h5>
           </button>
         </h2>
@@ -145,9 +153,12 @@ export default {
                 </div>
                 <!-- /Destinations -->
                 <!-- Buttons -->
-                <a href="#" class="btn btn-adddestination"
-                  >Add new destination</a
+                <router-link
+                  :to="`/trip/${trip_id}/day/${day.id}/add-destination`"
+                  class="btn btn-adddestination"
                 >
+                  Add new destination
+                </router-link>
                 <!-- /Buttons -->
               </div>
               <div class="day-map-box col-12 col-lg-5">Map Tomtom</div>

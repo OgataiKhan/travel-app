@@ -121,17 +121,16 @@ export default {
       <div v-if="error" class="alert alert-danger mt-3">
         {{ error }}
       </div>
-
+      <!-- Buttons -->
       <div class="d-flex justify-content-between mt-4">
-        <!-- Buttons -->
         <router-link to="/" class="btn btn-home" aria-current="page">
           Home
         </router-link>
         <button type="submit" class="btn btn-submit" :disabled="loading">
           Create Trip
         </button>
-        <!-- /Buttons -->
       </div>
+      <!-- /Buttons -->
     </form>
   </div>
 </template>

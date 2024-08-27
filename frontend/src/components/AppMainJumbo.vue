@@ -10,7 +10,6 @@ export default {
       <div class="container">
         <div class="textbox">
           <h2>Explore the World</h2>
-          <!-- <button type="button" class="btn">Add New Trip</button> -->
           <router-link to="/create-trip" class="btn">Create New Trip</router-link>
         </div>
       </div>
