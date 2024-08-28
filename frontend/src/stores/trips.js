@@ -133,6 +133,24 @@ export const useTripsStore = defineStore("trips", {
         throw error;
       }
     },
+    async updateTrip(tripData) {
+      try {
+        const response = await axios.post(
+          `${BASE_URL}trips/update_trip.php`,
+          tripData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log("Trip updated successfully:", response.data.message);
+        await this.fetchTrip(tripData.get("id")); // Fetch updated trip details
+      } catch (error) {
+        console.error("Error updating trip:", error);
+        throw error;
+      }
+    },
     async deleteTrip(id) {
       try {
         await axios.post(

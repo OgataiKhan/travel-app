@@ -184,6 +184,7 @@ export default {
     <router-link to="/" class="btn btn-home my-4" aria-current="page"
       >Home</router-link
     >
+    <router-link :to="`/trip/${trip_id}/update`" class="btn btn-update ms-3">Update trip</router-link>
     <button
       type="button"
       @click="deleteTrip(trip.id)"
@@ -202,6 +203,11 @@ export default {
 .btn-home,
 .btn-adddestination {
   @include button;
+}
+
+.btn-update {
+  background-color: $bg-tertiary;
+  color: $font-secondary;
 }
 
 .no-trips-msg {
