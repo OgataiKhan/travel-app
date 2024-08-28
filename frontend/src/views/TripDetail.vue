@@ -21,6 +21,18 @@ export default {
         }
       }
     },
+    async deleteDestination(destinationId, dayId) {
+      const tripsStore = useTripsStore();
+      if (confirm("Are you sure you want to delete this destination?")) {
+        try {
+          await tripsStore.deleteDestination(destinationId, dayId);
+          console.log("Destination deleted successfully!");
+        } catch (error) {
+          console.error("Error deleting destination:", error);
+          alert("Failed to delete destination. Please try again.");
+        }
+      }
+    },
   },
   computed: {
     trip() {
@@ -144,7 +156,7 @@ export default {
                         {{ destination.description }}
                       </div>
                       <!-- Buttons -->
-                      <button type="button" class="btn btn-danger ms-3 mb-3">
+                      <button type="button" @click="deleteDestination(destination.id, day.id)" class="btn btn-danger ms-3 mb-3">
                         Remove destination
                       </button>
                       <!-- /Buttons -->

@@ -171,5 +171,25 @@ export const useTripsStore = defineStore("trips", {
         throw error;
       }
     },
+    async deleteDestination(destinationId, dayId) {
+      try {
+        await axios.post(
+          `${BASE_URL}destinations/delete_destination.php`,
+          { id: destinationId },
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log(`Destination with ID ${destinationId} deleted successfully.`);
+
+        // Refresh destinations after deletion
+        await this.fetchDestinations(dayId);
+      } catch (error) {
+        console.error("Error deleting destination:", error);
+        throw error;
+      }
+    },
   },
 });
