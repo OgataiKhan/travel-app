@@ -2,7 +2,7 @@
 import tt from '@tomtom-international/web-sdk-maps';
 import '@tomtom-international/web-sdk-maps/dist/maps.css';
 import { useTripsStore } from "../stores/trips";
-import { markRaw } from "vue";
+import { markRaw, watch } from "vue";
 
 export default {
   name: 'MapView',
@@ -14,6 +14,7 @@ export default {
   },
   mounted() {
     this.loadMap();
+    this.watchDestinations();
   },
   methods: {
     loadMap() {
@@ -55,6 +56,17 @@ export default {
         });
         this.map.fitBounds(bounds, { padding: 60 });
       }
+    },
+    watchDestinations() {
+      watch(
+        () => this.tripsStore.destinations,
+        (newDestinations, oldDestinations) => {
+          if (newDestinations && Object.keys(newDestinations).length > 0) {
+            this.loadAllDestinations();
+          }
+        },
+        { deep: true }
+      );
     },
     addMarker(latitude, longitude, name) {
       // Add marker for selected location
