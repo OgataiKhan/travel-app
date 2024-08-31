@@ -158,7 +158,6 @@ export default {
                         {{ destination.description }}
                       </div>
                       <!-- Buttons -->
-                      <!-- <router-link :to="``" class="btn btn-update ms-3">Edit destination</router-link> -->
                       <router-link
                         :to="{
                           name: 'UpdateDestination',
@@ -170,7 +169,7 @@ export default {
                         }"
                         class="btn btn-update ms-3 mb-3"
                       >
-                        Edit Destination
+                        Edit destination
                       </router-link>
                       <button
                         type="button"
@@ -190,6 +189,15 @@ export default {
                   class="btn btn-adddestination"
                 >
                   Add new destination
+                </router-link>
+                <router-link
+                  :to="{
+                    name: 'UpdateDay',
+                    params: { trip_id: trip_id, day_id: day.id },
+                  }"
+                  class="btn btn-update ms-3"
+                >
+                  Edit day
                 </router-link>
                 <!-- /Buttons -->
               </div>

@@ -3,6 +3,7 @@ import TripsView from "../views/TripsView.vue";
 import TripDetail from "../views/TripDetail.vue";
 import CreateTrip from "../views/CreateTrip.vue";
 import UpdateTrip from "../views/UpdateTrip.vue";
+import UpdateDay from '../views/UpdateDay.vue';
 import CreateDestination from "../views/CreateDestination.vue";
 import UpdateDestination from '../views/UpdateDestination.vue';
 import ErrorPage from "../views/ErrorPage.vue";
@@ -28,6 +29,12 @@ const routes = [
     path: "/trip/:trip_id/update",
     name: "UpdateTrip",
     component: UpdateTrip,
+    props: true,
+  },
+  {
+    path: '/trip/:trip_id/day/:day_id/edit-day',
+    name: 'UpdateDay',
+    component: UpdateDay,
     props: true,
   },
   {
