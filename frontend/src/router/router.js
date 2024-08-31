@@ -4,6 +4,7 @@ import TripDetail from "../views/TripDetail.vue";
 import CreateTrip from "../views/CreateTrip.vue";
 import UpdateTrip from "../views/UpdateTrip.vue";
 import CreateDestination from "../views/CreateDestination.vue";
+import UpdateDestination from '../views/UpdateDestination.vue';
 import ErrorPage from "../views/ErrorPage.vue";
 
 const routes = [
@@ -33,6 +34,12 @@ const routes = [
     path: "/trip/:trip_id/day/:day_id/add-destination",
     name: "CreateDestination",
     component: CreateDestination,
+    props: true,
+  },
+  {
+    path: '/trip/:trip_id/day/:day_id/edit-destination/:destination_id',
+    name: 'UpdateDestination',
+    component: UpdateDestination,
     props: true,
   },
   {

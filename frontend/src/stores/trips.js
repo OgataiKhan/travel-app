@@ -189,6 +189,38 @@ export const useTripsStore = defineStore("trips", {
         throw error;
       }
     },
+    async fetchDestination(id) {
+      try {
+        const response = await axios.get(`${BASE_URL}destinations/get_destinations.php?id=${id}`);
+        if (response.data) {
+          return response.data;
+        } else {
+          throw new Error("Destination not found");
+        }
+      } catch (error) {
+        console.error("Error fetching destination:", error);
+        throw error;
+      }
+    },
+    async updateDestination(destinationData) {
+      try {
+        await axios.post(
+          `${BASE_URL}destinations/update_destination.php`,
+          destinationData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        // Fetch updated destinations for specific day
+        await this.fetchDestinations(destinationData.day_id);
+        console.log("Destination updated successfully.");
+      } catch (error) {
+        console.error("Error updating destination:", error);
+        throw error;
+      }
+    },
     async deleteDestination(destinationId, dayId) {
       try {
         await axios.post(

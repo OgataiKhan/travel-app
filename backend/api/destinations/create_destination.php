@@ -8,7 +8,6 @@ $latitude = $_POST['latitude'];
 $longitude = $_POST['longitude'];
 $description = $_POST['description'];
 
-// TEMP
 if (!is_numeric($latitude)) {
     $latitude = null;
 }
@@ -16,7 +15,6 @@ if (!is_numeric($latitude)) {
 if (!is_numeric($longitude)) {
     $longitude = null;
 }
-// TEMP
 
 try {
     $stmt = $pdo->prepare("INSERT INTO destinations (day_id, name, latitude, longitude, description) VALUES (?, ?, ?, ?, ?)");

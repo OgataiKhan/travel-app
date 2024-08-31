@@ -158,7 +158,20 @@ export default {
                         {{ destination.description }}
                       </div>
                       <!-- Buttons -->
-                      <!-- <router-link :to="``" class="btn btn-update ms-3">Update destination</router-link> -->
+                      <!-- <router-link :to="``" class="btn btn-update ms-3">Edit destination</router-link> -->
+                      <router-link
+                        :to="{
+                          name: 'UpdateDestination',
+                          params: {
+                            trip_id: trip.id,
+                            day_id: day.id,
+                            destination_id: destination.id,
+                          },
+                        }"
+                        class="btn btn-update ms-3 mb-3"
+                      >
+                        Edit Destination
+                      </router-link>
                       <button
                         type="button"
                         @click="deleteDestination(destination.id, day.id)"
@@ -180,11 +193,6 @@ export default {
                 </router-link>
                 <!-- /Buttons -->
               </div>
-              <!-- Map -->
-              <!-- <div class="day-map-box col-12 col-lg-5">
-                <MapView :dayId="day.id" />
-              </div> -->
-              <!-- /Map -->
             </div>
           </div>
         </div>
@@ -197,7 +205,7 @@ export default {
         >Home</router-link
       >
       <router-link :to="`/trip/${trip_id}/update`" class="btn btn-update ms-3"
-        >Update trip</router-link
+        >Edit trip</router-link
       >
       <button
         type="button"
