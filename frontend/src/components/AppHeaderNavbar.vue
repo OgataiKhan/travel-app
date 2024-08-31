@@ -27,7 +27,7 @@ export default {
             <router-link to="/" class="nav-link" aria-current="page">Home</router-link>
           </li>
           <li class="nav-item rounded">
-            <a class="nav-link" href="#">New Trip</a>
+            <router-link to="/create-trip" class="nav-link">New Trip</router-link>
           </li>
           <li class="nav-item rounded">
             <a class="nav-link" href="#">About</a>

@@ -3,9 +3,11 @@ import { dateMixin } from "../mixins/dateMixin";
 import { deleteTripMixin } from "../mixins/deleteTripMixin";
 import { getImageUrlMixin } from "../mixins/getImageUrlMixin";
 import { useTripsStore } from "../stores/trips";
+import MapView from "../components/MapView.vue";
 
 export default {
   name: "TripsDetail",
+  components: { MapView },
   props: ["trip_id"],
   mixins: [dateMixin, deleteTripMixin, getImageUrlMixin],
   methods: {
@@ -156,7 +158,12 @@ export default {
                         {{ destination.description }}
                       </div>
                       <!-- Buttons -->
-                      <button type="button" @click="deleteDestination(destination.id, day.id)" class="btn btn-danger ms-3 mb-3">
+                      <!-- <router-link :to="``" class="btn btn-update ms-3">Update destination</router-link> -->
+                      <button
+                        type="button"
+                        @click="deleteDestination(destination.id, day.id)"
+                        class="btn btn-danger ms-3 mb-3"
+                      >
                         Remove destination
                       </button>
                       <!-- /Buttons -->
@@ -173,7 +180,11 @@ export default {
                 </router-link>
                 <!-- /Buttons -->
               </div>
-              <div class="day-map-box col-12 col-lg-5">Map Tomtom</div>
+              <!-- Map -->
+              <!-- <div class="day-map-box col-12 col-lg-5">
+                <MapView :dayId="day.id" />
+              </div> -->
+              <!-- /Map -->
             </div>
           </div>
         </div>
@@ -181,18 +192,29 @@ export default {
     </div>
     <!-- /Days -->
     <!-- Buttons -->
-    <router-link to="/" class="btn btn-home my-4" aria-current="page"
-      >Home</router-link
-    >
-    <router-link :to="`/trip/${trip_id}/update`" class="btn btn-update ms-3">Update trip</router-link>
-    <button
-      type="button"
-      @click="deleteTrip(trip.id)"
-      class="btn btn-danger ms-3"
-    >
-      Delete trip
-    </button>
+    <div class="my-4">
+      <router-link to="/" class="btn btn-home" aria-current="page"
+        >Home</router-link
+      >
+      <router-link :to="`/trip/${trip_id}/update`" class="btn btn-update ms-3"
+        >Update trip</router-link
+      >
+      <button
+        type="button"
+        @click="deleteTrip(trip.id)"
+        class="btn btn-danger ms-3"
+      >
+        Delete trip
+      </button>
+    </div>
     <!-- Buttons -->
+    <!-- Map -->
+    <div class="d-flex justify-content-center mt-2 mb-5">
+      <div class="day-map-box">
+        <MapView />
+      </div>
+    </div>
+    <!-- /Map -->
   </div>
 </template>
 
@@ -245,6 +267,6 @@ export default {
 }
 
 .day-map-box {
-  background-color: yellow;
+  width: 100%;
 }
 </style>

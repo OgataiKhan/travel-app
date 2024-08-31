@@ -10,5 +10,4 @@ import App from "./App.vue";
 // Import router
 import router from "./router/router";
 
-
 createApp(App).use(createPinia()).use(router).mount("#app");

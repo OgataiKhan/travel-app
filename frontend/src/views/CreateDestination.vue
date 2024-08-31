@@ -1,8 +1,10 @@
 <script>
 import { useTripsStore } from "../stores/trips";
+import MapViewSearch from "../components/MapViewSearch.vue";
 
 export default {
   name: "CreateDestination",
+  components: { MapViewSearch },
   props: ["day_id"],
   data() {
     return {
@@ -13,6 +15,7 @@ export default {
         longitude: "",
         description: "",
       },
+      apiKey: import.meta.env.VITE_TOMTOM_API_KEY,
       loading: false,
       error: null,
     };
@@ -23,11 +26,9 @@ export default {
       this.error = null;
       const tripsStore = useTripsStore();
 
-      console.log("Form Data:", this.form);
-
       try {
         await tripsStore.createDestination(this.form);
-        this.$router.push(`/trip/${tripsStore.currentTrip.id}`);
+        this.$router.push(`/trip/${this.$route.params.trip_id}`);
       } catch (error) {
         console.error("Error adding destination:", error);
         this.error =
@@ -36,6 +37,11 @@ export default {
         this.loading = false;
       }
     },
+    handleLocationSelected(result) {
+      // Update form with selected location
+      this.form.latitude = result.position.lat;
+      this.form.longitude = result.position.lng;
+    },
   },
 };
 </script>
@@ -43,6 +49,7 @@ export default {
 <template>
   <div class="container py-5">
     <h2>Add a New Destination</h2>
+
     <form @submit.prevent="submitForm">
       <div class="mb-3">
         <label for="name" class="form-label">Destination Name</label>
@@ -55,24 +62,6 @@ export default {
         />
       </div>
       <div class="mb-3">
-        <label for="latitude" class="form-label">Latitude</label>
-        <input
-          type="text"
-          class="form-control"
-          id="latitude"
-          v-model="form.latitude"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="longitude" class="form-label">Longitude</label>
-        <input
-          type="text"
-          class="form-control"
-          id="longitude"
-          v-model="form.longitude"
-        />
-      </div>
-      <div class="mb-3">
         <label for="description" class="form-label">Description</label>
         <textarea
           class="form-control"
@@ -81,6 +70,15 @@ export default {
           rows="3"
         ></textarea>
       </div>
+
+      <!-- Map Component -->
+      <MapViewSearch
+        ref="mapViewSearch"
+        :apiKey="apiKey"
+        @location-selected="handleLocationSelected"
+      />
+      <!-- /Map Component -->
+
       <div v-if="loading" class="mt-3">
         <p>Adding destination, please wait...</p>
       </div>
@@ -102,6 +100,7 @@ export default {
     </form>
   </div>
 </template>
+
 
 <style lang="scss" scoped>
 @use "../scss/partial/variables" as *;
