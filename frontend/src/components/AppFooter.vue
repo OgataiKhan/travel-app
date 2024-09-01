@@ -7,9 +7,9 @@ export default {
 </script>
 
 <template>
-  <footer class="py-5">
+  <footer class="text-center py-5">
     <div class="container">
-      Footer
+      Made with &hearts; by Kevin
     </div>
   </footer>
 </template>
