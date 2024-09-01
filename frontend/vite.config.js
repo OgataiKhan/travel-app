@@ -10,7 +10,8 @@ export default defineConfig({
       external: [
         '@tomtom-international/web-sdk-maps',
         '@tomtom-international/web-sdk-services',
-        '@tomtom-international/web-sdk-plugin-searchbox'
+        '@tomtom-international/web-sdk-plugin-searchbox',
+        '@tomtom-international/web-sdk-maps/dist/maps.css'
       ],
     },
   },
