@@ -4,6 +4,7 @@ import { deleteTripMixin } from "../mixins/deleteTripMixin";
 import { getImageUrlMixin } from "../mixins/getImageUrlMixin";
 import { useTripsStore } from "../stores/trips";
 import MapView from "../components/MapView.vue";
+import { Carousel } from "bootstrap";
 
 export default {
   name: "TripsDetail",
@@ -36,17 +37,26 @@ export default {
       }
     },
     async deleteImage(imageId, dayId) {
-    const tripsStore = useTripsStore();
-    if (confirm("Are you sure you want to delete this image?")) {
-      try {
-        await tripsStore.deleteDayImage(imageId, dayId);
-        console.log("Image deleted successfully and images re-fetched.");
-      } catch (error) {
-        console.error("Error deleting image:", error);
-        alert("Failed to delete image. Please try again.");
+      const tripsStore = useTripsStore();
+      if (confirm("Are you sure you want to delete this image?")) {
+        try {
+          await tripsStore.deleteDayImage(imageId, dayId);
+          console.log("Image deleted successfully and images re-fetched.");
+          this.resetCarousel(dayId);
+        } catch (error) {
+          console.error("Error deleting image:", error);
+          alert("Failed to delete image. Please try again.");
+        }
       }
-    }
-  },
+    },
+    resetCarousel(dayId) {
+      // Get carousel element by its ID
+      const carouselElement = document.getElementById('dayImagesCarousel' + dayId);
+      if (carouselElement) {
+        const bootstrapCarousel = Carousel.getInstance(carouselElement) || new Carousel(carouselElement);
+        bootstrapCarousel.to(0); // Move to first slide
+      }
+    },
   },
   computed: {
     trip() {
@@ -221,7 +231,8 @@ export default {
                       :class="['carousel-item', { active: imageIndex === 0 }]"
                     >
                       <!-- "X" button for deleting the image -->
-                      <button @click.stop="deleteImage(image.id, day.id)"
+                      <button
+                        @click.stop="deleteImage(image.id, day.id)"
                         class="delete-image-btn"
                         aria-label="Delete image"
                       >
