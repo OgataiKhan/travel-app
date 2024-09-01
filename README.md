@@ -15,8 +15,6 @@ This is my Travel App. It lets you keep track of your trips by adding destinatio
 3. [Running the Application](#running-the-application)
    - [Backend](#backend-1)
    - [Frontend](#frontend-1)
-4. [Contributing](#contributing)
-5. [License](#license)
 
 ## Prerequisites
 
