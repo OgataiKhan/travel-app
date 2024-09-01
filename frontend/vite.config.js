@@ -7,7 +7,11 @@ export default defineConfig({
   build: {
     rollupOptions: {
       // Specify modules that should be treated as external
-      external: ['@tomtom-international/web-sdk-maps'],
+      external: [
+        '@tomtom-international/web-sdk-maps',
+        '@tomtom-international/web-sdk-services',
+        '@tomtom-international/web-sdk-plugin-searchbox'
+      ],
     },
   },
 })
