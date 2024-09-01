@@ -35,6 +35,18 @@ export default {
         }
       }
     },
+    async deleteImage(imageId, dayId) {
+    const tripsStore = useTripsStore();
+    if (confirm("Are you sure you want to delete this image?")) {
+      try {
+        await tripsStore.deleteDayImage(imageId, dayId);
+        console.log("Image deleted successfully and images re-fetched.");
+      } catch (error) {
+        console.error("Error deleting image:", error);
+        alert("Failed to delete image. Please try again.");
+      }
+    }
+  },
   },
   computed: {
     trip() {
@@ -48,6 +60,10 @@ export default {
     destinations() {
       const tripsStore = useTripsStore();
       return tripsStore.destinations;
+    },
+    dayImages() {
+      const tripsStore = useTripsStore();
+      return tripsStore.images;
     },
   },
   created() {
@@ -113,20 +129,15 @@ export default {
           class="accordion-collapse collapse"
         >
           <div class="accordion-body">
-            <!-- Carousel -->
-            <div class="d-flex justify-content-center pb-4">
-              <div class="img-box">
-                <img
-                  src="/img/temp-thumbnail.jpg"
-                  alt="TEMP"
-                  class="img-fluid"
-                />
-              </div>
-            </div>
-            <!-- /Carousel -->
             <p>{{ day?.description }}</p>
             <div class="div-content row">
-              <div class="day-description-box col-12 col-lg-7">
+              <div
+                :class="[
+                  'day-description-box',
+                  'col-12',
+                  dayImages[day.id]?.length > 0 ? 'col-lg-5' : '',
+                ]"
+              >
                 <!-- Destinations -->
                 <div class="accordion">
                   <div
@@ -183,25 +194,94 @@ export default {
                   </div>
                 </div>
                 <!-- /Destinations -->
-                <!-- Buttons -->
-                <router-link
-                  :to="`/trip/${trip_id}/day/${day.id}/add-destination`"
-                  class="btn btn-adddestination"
+              </div>
+              <div class="col">
+                <!-- Carousel -->
+                <div
+                  v-if="dayImages[day.id]?.length > 0"
+                  :id="'dayImagesCarousel' + day.id"
+                  class="carousel slide mb-4"
+                  data-bs-ride="true"
                 >
-                  Add new destination
-                </router-link>
-                <router-link
-                  :to="{
-                    name: 'UpdateDay',
-                    params: { trip_id: trip_id, day_id: day.id },
-                  }"
-                  class="btn btn-update ms-3"
-                >
-                  Edit day
-                </router-link>
-                <!-- /Buttons -->
+                  <div class="carousel-indicators">
+                    <button
+                      v-for="(image, imageIndex) in dayImages[day.id] || []"
+                      :key="imageIndex"
+                      :data-bs-target="'#dayImagesCarousel' + day.id"
+                      :data-bs-slide-to="imageIndex"
+                      :class="{ active: imageIndex === 0 }"
+                      :aria-label="'Slide ' + (imageIndex + 1)"
+                      :aria-current="imageIndex === 0 ? 'true' : ''"
+                    ></button>
+                  </div>
+                  <div class="carousel-inner">
+                    <div
+                      v-for="(image, imageIndex) in dayImages[day.id || []]"
+                      :key="imageIndex"
+                      :class="['carousel-item', { active: imageIndex === 0 }]"
+                    >
+                      <!-- "X" button for deleting the image -->
+                      <button @click.stop="deleteImage(image.id, day.id)"
+                        class="delete-image-btn"
+                        aria-label="Delete image"
+                      >
+                        &times;
+                      </button>
+                      <!-- /"X" button for deleting the image -->
+                      <img
+                        :src="getImageUrl(image.image_path)"
+                        class="d-block w-100"
+                        :alt="
+                          'Image ' + (imageIndex + 1) + ' for Day ' + day.id
+                        "
+                      />
+                    </div>
+                  </div>
+                  <button
+                    class="carousel-control-prev"
+                    type="button"
+                    :data-bs-target="'#dayImagesCarousel' + day.id"
+                    data-bs-slide="prev"
+                  >
+                    <span
+                      class="carousel-control-prev-icon"
+                      aria-hidden="true"
+                    ></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button
+                    class="carousel-control-next"
+                    type="button"
+                    :data-bs-target="'#dayImagesCarousel' + day.id"
+                    data-bs-slide="next"
+                  >
+                    <span
+                      class="carousel-control-next-icon"
+                      aria-hidden="true"
+                    ></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
+                <!-- /Carousel -->
               </div>
             </div>
+            <!-- Buttons -->
+            <router-link
+              :to="`/trip/${trip_id}/day/${day.id}/add-destination`"
+              class="btn btn-adddestination"
+            >
+              Add new destination
+            </router-link>
+            <router-link
+              :to="{
+                name: 'UpdateDay',
+                params: { trip_id: trip_id, day_id: day.id },
+              }"
+              class="btn btn-update ms-3"
+            >
+              Edit day
+            </router-link>
+            <!-- /Buttons -->
           </div>
         </div>
       </div>
@@ -284,5 +364,39 @@ export default {
 
 .day-map-box {
   width: 100%;
+}
+
+.carousel-inner {
+  height: 0;
+  padding-bottom: 66%; /* this sets carousel aspect ratio (3:2 here) */
+}
+
+.carousel-item {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.carousel-item img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.delete-image-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: $font-secondary;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.delete-image-btn:hover {
+  color: #ff0000;
 }
 </style>

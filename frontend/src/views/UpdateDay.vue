@@ -10,6 +10,7 @@ export default {
       form: {
         id: this.$route.params.day_id,
         description: "",
+        images: [] // To hold the selected images
       },
       dayDate: "",
       loading: false,
@@ -39,13 +40,25 @@ export default {
         this.loading = false;
       }
     },
+    handleFileChange(event) {
+      this.form.images = event.target.files; // Store the selected files
+    },
     async submitForm() {
       this.loading = true;
       this.error = null;
       const tripsStore = useTripsStore();
 
       try {
-        await tripsStore.updateDay(this.form);
+        const formData = new FormData();
+        formData.append("id", this.form.id);
+        formData.append("description", this.form.description);
+
+        // Append each selected image to the form data
+        for (let i = 0; i < this.form.images.length; i++) {
+          formData.append("images[]", this.form.images[i]);
+        }
+
+        await tripsStore.updateDay(formData);
         this.$router.push(`/trip/${this.$route.params.trip_id}`);
       } catch (error) {
         console.error("Error updating day:", error);
@@ -72,6 +85,18 @@ export default {
           rows="3"
           required
         ></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="images" class="form-label">Upload Images</label>
+        <input
+          type="file"
+          accept="image/*"
+          class="form-control"
+          id="images"
+          @change="handleFileChange"
+          multiple
+        />
       </div>
 
       <div v-if="loading" class="mt-3">

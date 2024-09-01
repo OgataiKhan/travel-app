@@ -11,6 +11,7 @@ export const useTripsStore = defineStore("trips", {
     currentTrip: null,
     days: [],
     destinations: {},
+    images: {},
   }),
   actions: {
     fetchTrips() {
@@ -44,20 +45,45 @@ export const useTripsStore = defineStore("trips", {
           this.destinations = {};
         });
     },
+    // Fetch all days
     fetchDays(trip_id) {
       axios
         .get(`${BASE_URL}days/get_days.php?trip_id=${trip_id}`)
         .then((response) => {
           this.days = response.data;
+    
+          // Fetch destinations and images for each day
           this.days.forEach((day) => {
             this.fetchDestinations(day.id); // Fetch destinations for each day
+            this.fetchDayImages(day.id); // Fetch images for each day
           });
         })
         .catch((error) => {
           console.error("Error fetching days:", error);
           this.days = [];
         });
-    },
+    },    
+    fetchDayImages(day_id) {
+      axios
+        .get(`${BASE_URL}days/get_day_images.php?day_id=${day_id}`)
+        .then((response) => {
+          if (response.data) {
+            this.$patch((state) => {
+              state.images[day_id] = response.data;
+            });
+          } else {
+            this.$patch((state) => {
+              state.images[day_id] = [];
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching images:", error);
+          this.$patch((state) => {
+            state.images[day_id] = [];
+          });
+        });
+    },    
     fetchDestinations(day_id) {
       axios
         .get(`${BASE_URL}destinations/get_destinations.php?day_id=${day_id}`)
@@ -170,6 +196,7 @@ export const useTripsStore = defineStore("trips", {
         throw error;
       }
     },
+    // Fetch individual day
     async fetchDay(day_id) {
       try {
         const response = await axios.get(`${BASE_URL}days/get_days.php?day_id=${day_id}`);
@@ -270,6 +297,26 @@ export const useTripsStore = defineStore("trips", {
         await this.fetchDestinations(dayId);
       } catch (error) {
         console.error("Error deleting destination:", error);
+        throw error;
+      }
+    },
+    async deleteDayImage(imageId, dayId) {
+      try {
+        await axios.post(`${BASE_URL}days/delete_day_images.php`, {
+          image_id: imageId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        console.log("Image deleted successfully!");
+
+        // Re-fetch the images for the specified day
+        await this.fetchDayImages(dayId);
+      } catch (error) {
+        console.error("Error deleting image:", error);
         throw error;
       }
     },
