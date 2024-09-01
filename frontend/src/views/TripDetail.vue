@@ -167,7 +167,7 @@ export default {
                         :aria-controls="'destinationCollapse' + destination.id"
                       >
                         <h5 class="card-title">
-                          {{ destination.name }} - <span>STARS</span>
+                          {{ destination.name }}
                         </h5>
                       </button>
                     </h2>
