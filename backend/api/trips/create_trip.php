@@ -6,12 +6,16 @@ include '../headers.php';
 $cover_img = null;  // Default to null if no image is uploaded
 if (isset($_FILES['cover_img']) && $_FILES['cover_img']['error'] === UPLOAD_ERR_OK) {
     $uploadDir = '../../uploads/';
-    $fileName = basename($_FILES['cover_img']['name']);
-    $targetFilePath = $uploadDir . $fileName;
+    $originalFileName = pathinfo($_FILES['cover_img']['name'], PATHINFO_FILENAME);
+    $fileExtension = pathinfo($_FILES['cover_img']['name'], PATHINFO_EXTENSION);
 
-    // Move the file to the target directory
+    // Generate unique filename w/ current timestamp
+    $uniqueFileName = $originalFileName . '_' . time() . '.' . $fileExtension;
+    $targetFilePath = $uploadDir . $uniqueFileName;
+
+    // Move file to the target directory
     if (move_uploaded_file($_FILES['cover_img']['tmp_name'], $targetFilePath)) {
-        $cover_img = $fileName;  // Save the filename or the path to the image
+        $cover_img = $uniqueFileName;
     } else {
         die(json_encode(["message" => "Image upload failed."]));
     }
@@ -28,7 +32,7 @@ try {
     $stmt = $pdo->prepare($query);
     $stmt->execute([$title, $description, $start_date, $end_date, $cover_img]);
 
-    // Get the ID of the new trip
+    // Get ID of new trip
     $newTripId = $pdo->lastInsertId();
 
     echo json_encode(["message" => "Trip created successfully", "id" => $newTripId]);

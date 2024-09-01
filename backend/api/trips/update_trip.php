@@ -12,18 +12,22 @@ $cover_img = null;
 $oldImage = null;
 
 if (isset($_FILES['cover_img']) && $_FILES['cover_img']['error'] === UPLOAD_ERR_OK) {
-    // Retrieve current cover image from database
+    // Retrieve current cover image from the database
     $stmt = $pdo->prepare("SELECT cover_img FROM trips WHERE id = ?");
     $stmt->execute([$id]);
     $oldImage = $stmt->fetchColumn();
 
     $uploadDir = '../../uploads/';
-    $fileName = basename($_FILES['cover_img']['name']);
-    $targetFilePath = $uploadDir . $fileName;
+    $originalFileName = pathinfo($_FILES['cover_img']['name'], PATHINFO_FILENAME);
+    $fileExtension = pathinfo($_FILES['cover_img']['name'], PATHINFO_EXTENSION);
+
+    // Generate unique filename w/ current timestamp
+    $uniqueFileName = $originalFileName . '_' . time() . '.' . $fileExtension;
+    $targetFilePath = $uploadDir . $uniqueFileName;
 
     // Move new file to target directory
     if (move_uploaded_file($_FILES['cover_img']['tmp_name'], $targetFilePath)) {
-        $cover_img = $fileName;  // Save new filename
+        $cover_img = $uniqueFileName;
 
         // Delete old image if new one is uploaded
         if ($oldImage && file_exists($uploadDir . $oldImage)) {
