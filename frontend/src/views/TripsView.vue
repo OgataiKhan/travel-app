@@ -1,5 +1,5 @@
 <script>
-import { dateMixin } from '../mixins/dateMixin';
+import { dateMixin } from "../mixins/dateMixin";
 import { deleteTripMixin } from "../mixins/deleteTripMixin";
 import { getImageUrlMixin } from "../mixins/getImageUrlMixin";
 import { useTripsStore } from "../stores/trips";
@@ -57,24 +57,45 @@ export default {
     <!-- /No trips found message -->
     <div class="row gy-4 pb-5">
       <!-- Trip card -->
-      <div v-for="trip in filteredTrips" class="col col-lg-4 col-xxl-3">
+      <div
+        v-for="trip in filteredTrips"
+        class="col col-md-6 col-lg-4 col-xxl-3 d-flex"
+      >
         <div class="card" style="min-width: 18rem">
           <div class="cover-img-box d-flex align-items-center">
-            <img :src="trip.cover_img ? getImageUrl(trip.cover_img) : '/img/temp-thumbnail.jpg'" class="card-img-top" :alt="trip.title" />
+            <img
+              :src="
+                trip.cover_img
+                  ? getImageUrl(trip.cover_img)
+                  : '/img/temp-thumbnail.jpg'
+              "
+              class="card-img-top"
+              :alt="trip.title"
+            />
           </div>
-          
-          <div class="card-body">
+
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title">{{ trip.title }}</h5>
             <h6 class="card-subtitle mb-2 text-body-secondary">
               {{ formatDate(trip.start_date) }} -
               {{ formatDate(trip.end_date) }}
             </h6>
-            <p class="card-text">
+            <p class="card-text flex-fill">
               {{ trip.description }}
             </p>
             <!-- Buttons -->
-            <a :href="`/trip/${trip.id}`" class="btn btn-tripcard">View trip</a>
-            <button type="button" @click="deleteTrip(trip.id)" class="btn btn-danger ms-3">Delete trip</button>
+            <div>
+              <a :href="`/trip/${trip.id}`" class="btn btn-tripcard"
+                >View trip</a
+              >
+              <button
+                type="button"
+                @click="deleteTrip(trip.id)"
+                class="btn btn-danger ms-3"
+              >
+                Delete trip
+              </button>
+            </div>
             <!-- /Buttons -->
           </div>
         </div>
@@ -92,15 +113,18 @@ export default {
   @include button;
 }
 
-.no-trips-msg{
+.no-trips-msg {
   @include message;
 }
 
 .cover-img-box {
   aspect-ratio: 2 / 1;
   overflow: hidden;
-  // display: flex;
-  // align-items: center;
 }
 
+.card-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 </style>
