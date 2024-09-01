@@ -2,11 +2,11 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { format, parseISO, addDays, eachDayOfInterval } from "date-fns";
 
-const BASE_URL = "http://localhost:8000/api/";
+const BASE_URL = `${import.meta.env.VITE_BACKEND_URL}api/`;
 
 export const useTripsStore = defineStore("trips", {
   state: () => ({
-    BACKEND_URL: "http://localhost:8000/",
+    BACKEND_URL: import.meta.env.VITE_BACKEND_URL,
     trips: [],
     currentTrip: null,
     days: [],
