@@ -29,9 +29,6 @@ export default {
           <li class="nav-item rounded">
             <router-link to="/create-trip" class="nav-link">New Trip</router-link>
           </li>
-          <li class="nav-item rounded">
-            <a class="nav-link" href="#">About</a>
-          </li>
         </ul>
       </div>
     </div>
