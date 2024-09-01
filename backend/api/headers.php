@@ -5,13 +5,6 @@ require __DIR__ . '/../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
 
-// try {
-//     $dotenv->load();
-//     echo "Environment file loaded successfully.<br>";
-// } catch (Exception $e) {
-//     echo "Failed to load environment file: " . $e->getMessage() . "<br>";
-// }
-
 $allowed_origin = $_ENV['ALLOWED_ORIGIN'];
 
 // Set CORS headers
