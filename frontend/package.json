@@ -15,7 +15,10 @@
     "pinia": "^2.2.2",
     "sass": "^1.71.1",
     "vue": "^3.3.8",
-    "vue-router": "^4.4.3"
+    "vue-router": "^4.4.3",
+    "@tomtom-international/web-sdk-maps": "^6.25.0",
+    "@tomtom-international/web-sdk-plugin-searchbox": "^3.2.0",
+    "@tomtom-international/web-sdk-services": "^6.25.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.0",
